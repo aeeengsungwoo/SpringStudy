@@ -1,5 +1,4 @@
 package com.example.firstproject.controller;
-
 import com.example.firstproject.dto.ArticleForm;
 import com.example.firstproject.entity.Article;
 import com.example.firstproject.repository.ArticleRepository;
@@ -10,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -39,12 +39,22 @@ public class ArticleController {
     public String show(@PathVariable Long id, Model model){
     log.info("id = " + id );
     // 1. id를 조회해 데이터 가져오기
-    // Optional<Article> articleEntity = articleRepository.findById(id);도 가능하다.
+        // Optional<Article> articleEntity = articleRepository.findById(id);도 가능하다.
         Article articleEntity = articleRepository.findById(id).orElse(null);
-    // id가 없으면 null을 반환한다.
+        // id가 없으면 null을 반환한다.
     // 2. 모델에 데이터 등록하기
         model.addAttribute("article",articleEntity);
     // 3. 뷰 페이지 반환하기
     return "articles/show";
+    }
+    @GetMapping("/articles")
+    public String index(Model model){
+        // 1 . 모든 데이터 가져오기
+        List<Article> articleEntityList = articleRepository.findAll();
+            // 정확히 하려면 ArrayList<Article>이 맞지만, ArrayList가 List를 포함하기 때문에 가능하다.
+        // 2. 모델에 데이터 등록하기
+        model.addAttribute("articleList",articleEntityList);
+        // 3. 뷰 페이지 설정하기
+        return "articles/index";
     }
 }
