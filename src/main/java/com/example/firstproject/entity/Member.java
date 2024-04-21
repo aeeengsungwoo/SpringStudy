@@ -2,6 +2,7 @@ package com.example.firstproject.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -9,6 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Getter
 public class Member {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +19,6 @@ public class Member {
         private String email;
         @Column
         private String password;
+
+
 }

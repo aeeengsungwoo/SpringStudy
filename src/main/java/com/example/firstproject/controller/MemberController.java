@@ -33,7 +33,7 @@ public class MemberController {
         log.info(saved.toString());
         //System.out.println(saved.toString());
 
-        return "";
+        return "redirect:/members/" + saved.getId();
     }
     @GetMapping("/members/{id}")
     public String show(@PathVariable Long id, Model model){

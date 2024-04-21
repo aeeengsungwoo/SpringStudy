@@ -33,7 +33,7 @@ public class ArticleController {
         Article saved = articleRepository.save(article);
         log.info(saved.toString());
         //System.out.println(saved.toString()); log로 대체
-        return "redirect：/articles/" + saved.getId();
+        return "redirect:/articles/" + saved.getId();
     }
     @GetMapping("/articles/{id}")
     public String show(@PathVariable Long id, Model model){
@@ -56,5 +56,29 @@ public class ArticleController {
         model.addAttribute("articleList",articleEntityList);
         // 3. 뷰 페이지 설정하기
         return "articles/index";
+    }
+    @GetMapping("/articles/{id}/edit")
+    public String edit(@PathVariable Long id,Model model){
+        // 수정할 데이터 가져오기
+        Article articleEntity = articleRepository.findById(id).orElse(null);
+        model.addAttribute("article", articleEntity);
+        // 뷰 페이지 설정하기
+        return "articles/edit";
+    }
+    @PostMapping("/articles/update")
+    public String update(ArticleForm form) {
+        log.info(form.toString());
+        // 1. DTO를 엔티티로 변환하기
+        Article articleEntity = form.toEntity();
+        log. info(articleEntity.toString());
+        // 2. 엔티티를 DB에 저장하기
+        // 2-1 DB데이터 가져오기
+        Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
+        // 데이터 수정하기, 여기선 클릭으로 수정을 하기 때문에 타겟이 무조거 있지만, 비정상적인 접근을 막기 위해선 if조건문을 꼭 사용해야함
+        if (target != null) {
+            articleRepository.save(articleEntity); // 엔티티를 DB에 저장(갱신)
+        }
+        // 3. 수정 결과 페이지로 리다이렉트하기
+        return "redirect:/articles/" + articleEntity.getId();
     }
 }
