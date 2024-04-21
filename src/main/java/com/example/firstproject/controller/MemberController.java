@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import java.util.List;
 
 @Slf4j
@@ -54,5 +55,29 @@ public class MemberController {
         model.addAttribute("memberList",memberEntityList);
         // 3. 뷰 페이지 설정하기
         return "members/index";
+    }
+    @GetMapping("/members/{id}/edit")
+    public String edit(@PathVariable Long id,Model model){
+        // 수정할 데이터 가져오기
+        Member memberEntity = memberRepository.findById(id).orElse(null);
+        model.addAttribute("member", memberEntity);
+        // 뷰 페이지 설정하기
+        return "members/edit";
+    }
+    @PostMapping("/members/update")
+    public String update(MemberForm form) {
+        log.info(form.toString());
+        // 1. DTO를 엔티티로 변환하기
+        Member memberEntity = form.toEntity();
+        log. info(memberEntity.toString());
+        // 2. 엔티티를 DB에 저장하기
+        // 2-1 DB데이터 가져오기
+        Member target = memberRepository.findById(memberEntity.getId()).orElse(null);
+        // 데이터 수정하기, 여기선 클릭으로 수정을 하기 때문에 타겟이 무조거 있지만, 비정상적인 접근을 막기 위해선 if조건문을 꼭 사용해야함
+        if (target != null) {
+            memberRepository.save(memberEntity); // 엔티티를 DB에 저장(갱신)
+        }
+        // 3. 수정 결과 페이지로 리다이렉트하기
+        return "redirect:/members/" + memberEntity.getId();
     }
 }
