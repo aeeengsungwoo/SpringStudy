@@ -54,7 +54,7 @@ public class ArticleController {
     public String index(Model model){
         // 1 . 모든 데이터 가져오기
         List<Article> articleEntityList = articleRepository.findAll();
-            // 정확히 하려면 ArrayList<Article>이 맞지만, ArrayList가 List를 포함하기 때문에 가능하다.
+        // 정확히 하려면 ArrayList<Article>이 맞지만, ArrayList가 List를 포함하기 때문에 가능하다.
         // 2. 모델에 데이터 등록하기
         model.addAttribute("articleList",articleEntityList);
         // 3. 뷰 페이지 설정하기
