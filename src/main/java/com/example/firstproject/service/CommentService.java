@@ -31,7 +31,7 @@ public class CommentService {
         // 3. 결과 반환
         return commentRepository.findByArticleId(articleId)
                 .stream()
-                .map(comment -> CommentDto.createCommentDto(comment))
+                .map(CommentDto::createCommentDto)
                 .collect(Collectors.toList());
     }
     @Transactional

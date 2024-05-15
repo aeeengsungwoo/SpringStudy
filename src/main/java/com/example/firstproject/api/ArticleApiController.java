@@ -2,6 +2,7 @@ package com.example.firstproject.api;
 
 import com.example.firstproject.dto.ArticleForm;
 import com.example.firstproject.entity.Article;
+import com.example.firstproject.response.ResponseData;
 import com.example.firstproject.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,12 @@ public class ArticleApiController {
     @Autowired
     private ArticleService articleService;
     //GET
+    @GetMapping("/api/request")
+    public ResponseData<List<Article>> responseData() {
+        List<Article> articles = articleService.index();
+        return ResponseData.res(200, "Success", articles);
+    }
+
     @GetMapping("/api/articles")
     public List<Article> index(){
         return articleService.index();
